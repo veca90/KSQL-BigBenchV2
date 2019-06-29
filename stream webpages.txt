@@ -1,0 +1,14 @@
+-- Create a stream that consumes data from the "webpages" kafka topic
+-- Create Kafka topic "webpages"
+-- bin/kafka-topics --create --zookeper localhost:2181 --replication-factor 1 --partitition 1 --topic webpages
+-- Make the topic consume from the .txt file
+-- bin/kafka-consol-producer --broker-list localhost:9892 --topic webpages < webpages.txt
+
+Create stream
+    Webpages (
+        w_id BIGINT,
+        w_web_page_name VARCHAR,
+        w_web_page_type VARCHAR)  
+    WITH (
+        KAFKA_TOPIC='webpages',  
+        VALUE_FORMAT='JSON');

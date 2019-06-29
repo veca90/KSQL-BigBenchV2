@@ -1,0 +1,34 @@
+-- Finde a list of users with the most visits
+-- q23 query from BigBench V2 adopted to KSQL syntax
+
+create stream 
+    l as 
+WITH (PARTITIONS=4) as
+    select 
+        wl_customer_id 
+    from 
+        clicks 
+    where  
+        wl_customer_id is not null ;
+
+create stream 
+    customers1 
+WITH (PARTITIONS=4) as 
+    select 
+        * 
+    from 
+        customers;
+
+select
+    c_id,  
+    c_name,  
+    count(*) as Visits 
+from
+    l 
+inner join 
+    customers1 
+WITHIN 2 HOURS on 
+    l.wl_customer_id = c_id
+group by
+    c_id,
+    c_name; 

@@ -1,0 +1,13 @@
+-- Create a stream that consumes data from the "customers" kafka topic
+-- Create Kafka topic "customers"
+-- bin/kafka-topics --create --zookeper localhost:2181 --replication-factor 1 --partitition 1 --topic customers
+-- Make the topic consume from the .txt file
+-- bin/kafka-consol-producer --broker-list localhost:9892 --topic customers < customers.txt
+
+Create stream
+    customers (
+        c_id BIGINT,
+        c_name VARCHAR)
+    WITH (
+        KAFKA_TOPIC=' customers',  
+        VALUE_FORMAT='JSON');

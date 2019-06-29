@@ -1,0 +1,16 @@
+-- Create a stream that consumes data from the "items" kafka topic
+-- Create Kafka topic "items"
+-- bin/kafka-topics --create --zookeper localhost:2181 --replication-factor 1 --partitition 1 --topic items
+-- Make the topic consume from the .txt file
+-- bin/kafka-consol-producer --broker-list localhost:9892 --topic items < items.txt
+
+Create stream
+    items (
+        i_id BIGINT,
+        i_name VARCHAR,
+        i_category_id BIGINT,
+        i_category VARCHAR,  
+        i_price DOUBLE)
+    WITH (
+        KAFKA_TOPIC='items',  
+        VALUE_FORMAT='JSON');

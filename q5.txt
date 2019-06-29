@@ -1,0 +1,57 @@
+-- Finde the 10 most browsed products
+-- q5 query from BigBench V2 adopted to KSQL syntax
+
+Create stream
+    items1 
+with
+    (partitions=4) as 
+    select 
+        * 
+    from 
+        items;
+
+Create stream
+    webpages1  
+with
+    (partitions =4) as 
+    select 
+        *
+    from 
+        webpages;
+
+Create stream
+    logs as 
+    select 
+        wl_customer_id, 
+        wl_item_id,
+        wl_webpage_name
+    from 
+        clicks 
+    where 
+        wl_customer_id is not NULL 
+        and wl_item_id is not NULL;
+
+Create stream
+    webpagelogs 
+with
+    (partitions =4) as 
+    select 
+        * 
+    from 
+        webpages 
+    inner join 
+        logs 
+    WITHIN 2 HOURS on
+        logs.wl_webpage_name = w_web_page_name;
+
+Select 
+    i_name, 
+    count(*) as cnt
+from 
+    webpagelogs 
+inner join 
+    items1 
+WITHIN 2 HOURS
+    on webpagelogs.logs_wl_item_id = items1.i_id
+where
+    webpagelogs.logs_wl_item_id = items1.i_id group by i_name;

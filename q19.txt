@@ -1,0 +1,18 @@
+-- Finde the days with the highest number of page views
+-- q19 query from BigBench V2 adopted to KSQL syntax
+
+Create stream 
+    time as 
+    select 
+        TIMESTAMPTOSTRING(STRINGTOTIMESTAMP(wl_timestamp,'yyyy-MM-dd HH:mm:ss'), 'dd-MM-yyyy') as date,
+        Count(*)
+    from 
+        clicks;
+
+select
+    date, 
+    count(*) as PageViews
+from 
+    time 
+group by 
+    date;

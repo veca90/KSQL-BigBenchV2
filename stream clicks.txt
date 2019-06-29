@@ -1,0 +1,17 @@
+-- Create a stream that consumes data from the "clicks" kafka topic
+-- Create Kafka topic "clicks"
+-- bin/kafka-topics --create --zookeper localhost:2181 --replication-factor 1 --partitition 1 --topic clicks
+-- Make the topic consume from the .txt file
+-- bin/kafka-consol-producer --broker-list localhost:9892 --topic clicks < clicks.txt
+
+Create stream
+    clicks (
+        wl_id BIGINT,
+        wl_customer_id BIGINT,
+        wl_item_id BIGINT,
+        wl_webpage_name VARCHAR,
+        wl_timestamp VARCHAR,
+        wl_key BIGINT )
+    WITH (
+        KAFKA_TOPIC='clicks',  
+        VALUE_FORMAT='JSON');

@@ -1,0 +1,14 @@
+-- Finde the top 10 pages visited on a certain day
+-- q17 query from BigBench V2 adopted to KSQL syntax
+
+select 
+    wl_webpage_name, 
+    count(*) as cnt 
+from 
+    clicks 
+where 
+    wl_webpage_name is not null and 
+    wl_timestamp >= '2013-02-14' and
+    wl_timestamp < '2014-02-15'
+group by 
+    wl_webpage_name;

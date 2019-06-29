@@ -1,0 +1,10 @@
+-- Finde the number of unique visitors per day 
+-- q22 query from BigBench V2 adopted to KSQL syntax
+
+select 
+    Date,
+    count(*)
+from 
+    clicks 
+where 
+    wl_customer_id is not null;
